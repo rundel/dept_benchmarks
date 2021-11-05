@@ -238,12 +238,13 @@ run_benchmarks = function(benchmarks = c(prog_funcs, matrix_calcs, matrix_funcs)
   )
 }
 
-z = run_benchmarks(min_iter = 5)
+z = run_benchmarks(min_iter = 10)
 
 system = Sys.info()["nodename"] %>% str_remove("\\.local")
 
 saveRDS(
-  file.path(
+  z,
+  file = file.path(
     "benchmarkme",
     paste0("benchmarkme_", system, ".rds")
   )
