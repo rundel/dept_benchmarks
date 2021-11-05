@@ -234,11 +234,13 @@ run_benchmarks = function(benchmarks = c(prog_funcs, matrix_calcs, matrix_funcs)
     ~ .x(min_iter=min_iter) %>%
       mutate(
         expression = attr(expression, "description"),
+        result = list(NULL)
       )
   )
 }
 
 z = run_benchmarks(min_iter = 10)
+
 
 system = Sys.info()["nodename"] %>% str_remove("\\.local")
 
