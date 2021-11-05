@@ -239,6 +239,7 @@ run_benchmarks = function(benchmarks = c(prog_funcs, matrix_calcs, matrix_funcs)
   )
 }
 
+RhpcBLASctl::omp_set_num_threads(4)
 z = run_benchmarks(min_iter = 10)
 
 
