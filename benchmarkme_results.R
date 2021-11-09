@@ -1,7 +1,8 @@
 library(tidyverse)
+library(bench)
 
 r = map_dfr(
-  dir("benchmarkme/", full.names = TRUE),
+  fs::dir_ls("benchmarkme/", glob = "*.rds"),
   ~ readRDS(.x) %>% mutate(system = basename(.x) %>% str_remove_all("benchmarkme_|\\.rds"))
 )
 
@@ -11,4 +12,6 @@ r %>%
     system = expression
   ) %>%
   plot()
+
+ggsave("benchmarkme_prelim.png", width = 10, height = 6)
 
