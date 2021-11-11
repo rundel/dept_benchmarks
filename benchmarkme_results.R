@@ -6,6 +6,12 @@ r = map_dfr(
   ~ readRDS(.x) %>% mutate(system = basename(.x) %>% str_remove_all("benchmarkme_|\\.rds"))
 )
 
+r %>%
+  select(expression, system, median) %>%
+  mutate(median = as.numeric(median)) %>%
+  pivot_wider(expression, names_from = system, values_from = median) %>%
+  write_csv("benchmarkme_prelim.csv")
+
 
 r %>%
   rename(
