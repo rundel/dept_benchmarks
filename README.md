@@ -7,8 +7,8 @@
 | mini            | Mac Mini             | M1              | 8 (4/4)           | 8 GB         |
 | countzero       | MacBook Pro 14/16?   | M1 Pro/Max?     | 10 (8/2)          | ? GB         |
 | monster         | Dept Server          | Xeon E5-2643 v4 | 6 @ 3.40GHz       | 256 GB       |
-| statistics3     | Old DRC VM           | Xeon E5-2699 v4 | 16 @ 2.20GHz      | 256 GB       |
-| sequence1       | New DRC VM           | Xeon Gold 6252  | 24 @ 2.10GHz      | 256 GB       |
+| statistics3     | Old VM               | Xeon E5-2699 v4 | 16 @ 2.20GHz      | 256 GB       |
+| sequence1       | New VM               | Xeon Gold 6252  | 24 @ 2.10GHz      | 256 GB       |
 
 ### benchmarkme results
 
@@ -31,6 +31,7 @@ The following tests are included:
 * Cholesky decomposition of a 3,000 x 3,000 matrix
 * Inverse of a 1,600 x 1,600 random matrix
 
+
 #### Preliminary results
 
 ![](benchmarkme_prelim.png)
@@ -39,3 +40,11 @@ The following tests are included:
 
 ![](benchmarkme_prelim_rel.png)
 
+
+#### Notes
+
+* For the Mac OS machines the results come from running R linked to either openblas or Apple's veclib
+
+* All linux machines were running Fedora 33 running R linked to openblasp
+
+* Any machine using openblas was restricted to using a maximum of 4 threads for BLAS calculations
