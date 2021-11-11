@@ -12,7 +12,7 @@
 
 ### benchmarkme results
 
-Results are from a modified version of the benchmarkme tests, they now use the `bench` package with 10 runs each. Less than 10 times are available for some tests due to GC invalidating the test.
+Results are from a modified version of the `benchmarkme` test suite, they now use the `bench` package with 10 runs each. Less than 10 timing results are available for some tests due to GC invalidating the test.
 
 The following tests are included:
 * 3,500,000 Fibonacci numbers calculation (vector calc)
