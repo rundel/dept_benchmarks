@@ -5,10 +5,11 @@
 |-----------------|----------------------|-----------------|-------------------|--------------|
 | tbBook2         | MacBook Pro 13       | Intel i7        | 4 @ 2.7 GHz       | 16 GB        |
 | mini            | Mac Mini             | M1              | 8 (4/4)           | 8 GB         |
-| countzero       | MacBook Pro 14       | M1 Max.         | 10 (8/2)          | 64 GB         |
+| countzero       | MacBook Pro 14       | M1 Max.         | 10 (8/2)          | 64 GB        |
 | monster         | Dept Server          | Xeon E5-2643 v4 | 6 @ 3.40GHz       | 256 GB       |
 | statistics3     | Old VM               | Xeon E5-2699 v4 | 16 @ 2.20GHz      | 256 GB       |
 | sequence1       | New VM               | Xeon Gold 6252  | 24 @ 2.10GHz      | 256 GB       |
+| dcc-statdept-01 | DCC Node             | Xeon Gold 6154  | 70 (8) @ 3.00GHz  | 724 (2) GB   |
 
 ### benchmarkme results
 
