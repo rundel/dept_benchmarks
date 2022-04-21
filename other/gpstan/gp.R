@@ -15,5 +15,6 @@ d = list(
 
 res = m$sample(
   data=d, iter_warmup=100, iter_sampling=100,
-  chains=1, parallel_chains=1, refresh=10
+  chains=2, parallel_chains=2, threads_per_chain = 4,
+  refresh=10
 )
