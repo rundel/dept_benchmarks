@@ -3,7 +3,12 @@ library(bench)
 
 r = map_dfr(
   fs::dir_ls("benchmarkme/", glob = "*.rds"),
-  ~ readRDS(.x) %>% mutate(system = basename(.x) %>% str_remove_all("benchmarkme_|\\.rds"))
+  ~ readRDS(.x) %>%
+    mutate(
+      system = basename(.x) %>% str_remove_all("benchmarkme_|\\.rds"),
+      across(c(min, median, total_time), bench::as_bench_time),
+      across(c(mem_alloc), bench::as_bench_bytes)
+    )
 )
 
 r %>%
