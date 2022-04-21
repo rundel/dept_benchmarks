@@ -10,6 +10,7 @@
 | statistics3     | Old VM               | Xeon E5-2699 v4 | 16 @ 2.20GHz      | 256 GB       |
 | sequence1       | New VM               | Xeon Gold 6252  | 24 @ 2.10GHz      | 256 GB       |
 | dcc-statdept-01 | DCC Node             | Xeon Gold 6154  | 70 (8) @ 3.00GHz  | 724 (2) GB   |
+| grid1           | Math grid node       | Ryzen 9 5950X   | 16(32) @ 3.4(4.9) | 128 GB       |
 
 ### benchmarkme results
 
