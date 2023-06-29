@@ -1,0 +1,125 @@
+---
+format: gfm
+---
+
+```{r setup}
+#| message: false
+#| echo: false
+library(tidyverse)
+library(bench)
+```
+
+
+## VM and related machine benchmarks
+
+```{r}
+#| echo: false
+#| message: false
+m = read_csv("data/machines.csv")
+knitr::kable(m)
+```
+
+### benchmarkme results
+
+Results are from a modified version of the `benchmarkme` test suite, they now use the `bench` package with 10 runs each. Less than 10 timing results are available for some tests due to GC invalidating the test.
+
+The following tests are included:
+* 3,500,000 Fibonacci numbers calculation (vector calc)
+* Creation of a 3,500 x 3,500 Hilbert matrix (matrix cal
+* Grand common divisors of 1,000,000 pairs (recursion)
+* Creation of a 3,000 x 3,000 Toeplitz matrix (loops)
+* Escoufier's method on a 60 x 60 matrix (mixed)
+* Creation, transp., deformation of a 5,000 x 5,000 matrix
+* 2,500 x 2,500 normal distributed random matrix^1,000
+* Sorting of 7,000,000 random values
+* 2,500 x 2,500 cross-product matrix (b = a' * a)
+* Linear regr. over a 5,000 x 500 matrix (c = a \\ b')
+* FFT over 2,500,000 random values
+* Eigenvalues of a 640 x 640 random matrix
+* Determinant of a 2,500 x 2,500 random matrix
+* Cholesky decomposition of a 3,000 x 3,000 matrix
+* Inverse of a 1,600 x 1,600 random matrix
+
+
+#### Preliminary results
+
+```{r data}
+#| echo: false
+r = map_dfr(
+  fs::dir_ls("benchmarkme/", glob = "*.rds"),
+  ~ readRDS(.x) %>%
+    mutate(
+      system = basename(.x) %>% str_remove_all("benchmarkme_|\\.rds"),
+      across(c(min, median, total_time), bench::as_bench_time),
+      across(c(mem_alloc), bench::as_bench_bytes)
+    )
+) %>%
+  separate_wider_delim(system, "_", names=c("system","blas"), too_few = "align_start") %>%
+  mutate(
+    blas =  if_else(is.na(blas), "openblas", blas)
+  ) %>%
+  left_join(
+    m %>% select(system="Machine", os=OS),
+    by = join_by(system)
+  ) %>%
+  arrange(os, blas) %>%
+  mutate(
+    system = glue::glue("{system} ({blas})") %>%
+      forcats::as_factor()
+  ) %>%
+  select(-os, -blas) %>%
+  mutate(
+    expression = stringr::str_wrap(expression, 30)
+  )
+```
+
+```{r}
+#| echo: false
+r %>%
+  select(expression, system, median) %>%
+  mutate(median = as.numeric(median)) %>%
+  pivot_wider(id_cols = expression, names_from = system, values_from = median) %>%
+  write_csv("benchmarkme_prelim.csv")
+```
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 9
+r %>%
+  rename(
+    expression = system,
+    system = expression
+  ) %>%
+  bench::as_bench_mark() %>%
+  plot()
+```
+
+#### Preliminary relative results
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 9
+r %>%
+  group_by(expression) %>%
+  mutate(
+    min_time = min(unlist(time)),
+    time = map2(time, min_time, `/`)
+  ) %>%
+  select(-min_time) %>%
+  ungroup() %>%
+  rename(
+    expression = system,
+    system = expression
+  ) %>%
+  bench::as_bench_mark() %>%
+  plot()
+```
+
+
+#### Notes
+
+* For the Mac OS machines the results come from running R linked to either OpenBLAS or Apple's veclib
+
+* Any machine using OpenBLAS was restricted to using a maximum of 4 threads for BLAS calculations
